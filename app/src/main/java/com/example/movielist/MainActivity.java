@@ -1,6 +1,7 @@
 package com.example.movielist;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -38,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         dbHelper = new MovieDatabaseHelper(this);
 
-
         setSupportActionBar(toolbar);
+        populateListView();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -51,22 +53,34 @@ public class MainActivity extends AppCompatActivity {
                 populateListView();
             }
         });
+
+        ListView list = findViewById(R.id.movielist);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                intent.putExtra("id", id + 1);
+                startActivity(intent);
+            }
+        });
     }
 
     public void AddData(String newEntry){
-        boolean insertData = dbHelper.addData(newEntry);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("title", newEntry);
+        getContentResolver().insert(MovieContentProvider.CONTENT_URI, contentValues);
     }
 
     public void populateListView(){
         Log.d(TAG, "populateListView: Displaying data in listview.");
         ListView listView = findViewById(R.id.movielist);
 
-        Cursor data = dbHelper.getData();
+        Cursor data = getContentResolver().query(MovieContentProvider.CONTENT_URI, null, null, null, null);
         ArrayList<String> listData = new ArrayList<>();
         while(data.moveToNext()){
             listData.add(data.getString(1));
         }
-        ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
+        ListAdapter adapter = new ArrayAdapter<>(this, R.layout.item_list, listData);
         listView.setAdapter(adapter);
     }
 
