@@ -3,6 +3,7 @@
     package="com.example.movielist">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.type.watch" />
 
@@ -13,7 +14,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieList">
-        <activity android:name=".DetailActivity"></activity>
+        <receiver
+            android:name=".MyReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.movielist.RESPONSE"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".MovieService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".AddActivity" />
+        <activity android:name=".DetailActivity" />
 
         <provider
             android:name=".MovieContentProvider"
