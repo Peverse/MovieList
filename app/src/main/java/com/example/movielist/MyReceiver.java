@@ -21,11 +21,22 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String data = intent.getStringExtra("data");
-        Gson gson = new Gson();
+        if(data != null) {
+            Gson gson = new Gson();
+            Movie movie = gson.fromJson(data, Movie.class);
 
-        Movie movie = gson.fromJson(data, Movie.class);
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("title", movie.Title);
-        context.getContentResolver().insert(MovieContentProvider.CONTENT_URI, contentValues);
+            if(movie.Title != null) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("title", movie.Title);
+                contentValues.put("year", movie.Year);
+                contentValues.put("genre", movie.Genre);
+                context.getContentResolver().insert(MovieContentProvider.CONTENT_URI, contentValues);
+            }
+        }
+
+        Intent i = new Intent();
+        i.setClassName("com.example.movielist", "com.example.movielist.MainActivity");
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
     }
 }

@@ -33,14 +33,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    MovieDatabaseHelper dbHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        dbHelper = new MovieDatabaseHelper(this);
+
 
         setSupportActionBar(toolbar);
         populateListView();
@@ -72,14 +71,7 @@ public class MainActivity extends AppCompatActivity {
         populateListView();
     }
 
-    public void AddData(String newEntry){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("title", newEntry);
-        getContentResolver().insert(MovieContentProvider.CONTENT_URI, contentValues);
-    }
-
     public void populateListView(){
-        Log.d(TAG, "populateListView: Displaying data in listview.");
         ListView listView = findViewById(R.id.movielist);
 
         Cursor data = getContentResolver().query(MovieContentProvider.CONTENT_URI, null, null, null, null);

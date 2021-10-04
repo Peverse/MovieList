@@ -11,9 +11,11 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TABLE_NAME = "MovieDatabase";
-    private static final String COL2 = "title";
+    private static final String COL1 = "title";
+    private static final String COL2 = "year";
+    private static final String COL3 = "genre";
 
     public MovieDatabaseHelper(Context context) {
         super(context, TABLE_NAME, null, DATABASE_VERSION);
@@ -21,7 +23,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT)";
+                COL1 +" TEXT, " + COL2 + " TEXT, " + COL3 + " TEXT)";
         db.execSQL(createTable);
     }
 
@@ -33,29 +35,6 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
-    }
-
-    public boolean addData(String item){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL2, item);
-
-        Log.d(TAG, "addData: adding " + item + " to " + TABLE_NAME);
-
-        long result = db.insert(TABLE_NAME, null, contentValues);
-
-        if(result == -1){
-            return false;}
-        else {
-            return true;
-        }
-    }
-
-    public Cursor getData(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME;
-        Cursor data = db.rawQuery(query, null);
-        return data;
     }
 }
 

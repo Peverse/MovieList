@@ -38,10 +38,6 @@ public class MovieService extends Service {
 
         @Override
         public void onCreate() {
-            // Start up the thread running the service. Note that we create a
-            // separate thread because the service normally runs in the process's
-            // main thread, which we don't want to block. We also make it
-            // background priority so CPU-intensive work doesn't disrupt our UI.
             HandlerThread thread = new HandlerThread("ServiceStartArguments",
                     Process.THREAD_PRIORITY_BACKGROUND);
             thread.start();
@@ -61,7 +57,6 @@ public class MovieService extends Service {
             msg.arg1 = startId;
             serviceHandler.sendMessage(msg);
 
-            Log.d("service working", "service");
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String title = intent.getStringExtra("title");
             String url ="https://www.omdbapi.com/?t=" + title + "&apikey=14d1cf78";
@@ -82,7 +77,6 @@ public class MovieService extends Service {
                 public void onErrorResponse(VolleyError error) {
                     Intent intent = new Intent(getApplicationContext(), MyReceiver.class);
                     intent.setAction("com.example.movielist.RESPONSE");
-                    intent.putExtra("data", "no response");
                     sendBroadcast(intent);
                 }
             });

@@ -23,10 +23,12 @@ public class DetailActivity extends AppCompatActivity {
         Cursor data = getContentResolver().query(MovieContentProvider.CONTENT_URI, null, "ID=?", new String[]{String.valueOf(getIntent().getLongExtra("id", 0))}, null);
         EditText title = findViewById(R.id.titleEdit);
         EditText year = findViewById(R.id.yearEdit);
+        EditText genre = findViewById(R.id.genreEdit);
 
         while(data.moveToNext()) {
             title.setText(data.getString(1));
-            year.setText(data.getString(0));
+            year.setText(data.getString(2));
+            genre.setText(data.getString(3));
         }
 
         Button save = findViewById(R.id.saveBtn);
@@ -35,6 +37,8 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("title", String.valueOf(title.getText()));
+                contentValues.put("year", String.valueOf(year.getText()));
+                contentValues.put("genre", String.valueOf(genre.getText()));
                 getContentResolver().update(MovieContentProvider.CONTENT_URI, contentValues, "ID=?", new String[]{String.valueOf(getIntent().getLongExtra("id", 0))});
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

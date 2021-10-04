@@ -35,19 +35,13 @@ public class AddActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("Add", "clicked");
                 Intent intent = new Intent(getApplicationContext(), MovieService.class);
                 intent.putExtra("title", addTitle.getText().toString());
                 startService(intent);
 
-                returnToMain();
+
             }
         });
-    }
-
-    private void returnToMain(){
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
     }
 }
 
