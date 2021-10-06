@@ -20,6 +20,7 @@ public class MyReceiver extends BroadcastReceiver {
     private static final String TAG = "MyBroadcastReceiver";
     @Override
     public void onReceive(Context context, Intent intent) {
+        //if data is received and is a valid movie, it is added to the database.
         String data = intent.getStringExtra("data");
         if(data != null) {
             Gson gson = new Gson();
@@ -34,6 +35,7 @@ public class MyReceiver extends BroadcastReceiver {
             }
         }
 
+        //the user is returned to the main activity.
         Intent i = new Intent();
         i.setClassName("com.example.movielist", "com.example.movielist.MainActivity");
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

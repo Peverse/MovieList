@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-
         setSupportActionBar(toolbar);
         populateListView();
 
@@ -66,12 +65,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
+        //refreshes the listview when resuming activity.
         super.onResume();
 
         populateListView();
     }
 
     public void populateListView(){
+        //fills the list with movies from the local SQLite database.
         ListView listView = findViewById(R.id.movielist);
 
         Cursor data = getContentResolver().query(MovieContentProvider.CONTENT_URI, null, null, null, null);
